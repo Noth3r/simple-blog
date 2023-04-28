@@ -15,7 +15,7 @@ const CommentComponent = ({ item }: { item: Comment }) => {
         </div>
         {item.name}
       </h3>
-      <p className="ml-4 mt-1">{item.body}</p>
+      <p className="ml-8 xl:ml-4 mt-1">{item.body}</p>
     </div>
   );
 };

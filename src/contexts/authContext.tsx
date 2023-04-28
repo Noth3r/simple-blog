@@ -50,8 +50,6 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const update = async (data: User) => {
     const res = await updateUser(data);
 
-    console.log(res);
-
     localStorage.setItem('token', JSON.stringify(res));
     setAuth({ isLogin: true, ...res });
   };

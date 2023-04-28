@@ -15,16 +15,16 @@ const UserComponent = ({ user }: { user: User }) => {
   };
 
   return (
-    <div className="flex flex-col mt-4 border-2 px-4 py-2 rounded-xl">
+    <div className="flex flex-col mt-4 border-2 px-4 py-2 rounded-xl overflow-y-auto">
       <div className="flex flex-row">
         <div className="flex flex-col">
           <p className="font-bold">Name</p>
           <p className="font-bold">Email</p>
           <p className="font-bold">ID</p>
         </div>
-        <div className="flex flex-col ml-4">
+        <div className="flex flex-col ml-4 pr-4">
           <p>: {user.name}</p>
-          <p>: {user.email}</p>
+          <p className="truncate">: {user.email}</p>
           <div className="flex items-center gap-2">
             : {show ? user.id : asteriks(user.id!)}{' '}
             <div
