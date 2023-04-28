@@ -4,6 +4,7 @@ import { getComment, getPost, postComment } from '@/utils/query';
 import { GetServerSideProps } from 'next';
 import { FormEvent, useState } from 'react';
 import useAuth from '@/hooks/useAuth';
+import CommentComponent from '@/components/post/CommentComponent';
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { id } = context.query;
@@ -24,13 +25,12 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   };
 };
 
-export default function Post({
-  post,
-  commentSSR,
-}: {
+type PostProps = {
   post: Post;
   commentSSR: Comment[];
-}) {
+};
+
+export default function Post({ post, commentSSR }: PostProps) {
   const [comment, setComment] = useState(commentSSR ?? []);
   console.log(comment);
 
@@ -62,32 +62,24 @@ export default function Post({
             type="text"
             name="body"
             className="border rounded w-full px-2 py-2"
-            placeholder="Write your comments..."
+            placeholder={
+              auth?.data?.isLogin
+                ? 'Write your comments...'
+                : 'Login to write comments'
+            }
             required
+            disabled={!auth?.data?.isLogin}
           />
           <button
             type="submit"
-            className="bg-blue-500 text-white px-4 py-2 rounded ml-2"
+            className="bg-blue-500 text-white px-4 py-2 rounded ml-2 disabled:opacity-80"
+            disabled={!auth?.data?.isLogin}
           >
             Submit
           </button>
         </form>
         {comment.map((item) => (
-          <div className="pl-4 border-2 rounded-xl py-4 mb-2" key={item.id}>
-            <h3 className="font-semibold flex gap-1 items-center">
-              <div className="w-7 h-7 border rounded-full flex items-center justify-center">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="w-4 h-4"
-                  viewBox="0 0 448 512"
-                >
-                  <path d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512H418.3c16.4 0 29.7-13.3 29.7-29.7C448 383.8 368.2 304 269.7 304H178.3z" />
-                </svg>
-              </div>
-              {item.name}
-            </h3>
-            <p className="ml-4 mt-1">{item.body}</p>
-          </div>
+          <CommentComponent item={item} key={item.id} />
         ))}
       </div>
     </Layout>

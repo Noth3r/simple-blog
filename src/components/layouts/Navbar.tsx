@@ -65,7 +65,7 @@ const ListNav = () => {
 
   return (
     <>
-      <Link href="/user">
+      <Link href="/users">
         <li className="cursor-pointer hover:scale-110 transition font-semibold">
           List Users
         </li>

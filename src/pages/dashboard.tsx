@@ -3,25 +3,19 @@ import useAuth from '@/hooks/useAuth';
 import { User } from '@/types/user';
 import { deleteUser } from '@/utils/query';
 import Error from 'next/error';
+import { useRouter } from 'next/router';
 import { MouseEvent, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
 export default function Dashboard() {
   const auth = useAuth();
-  const {
-    register,
-    handleSubmit,
-    setValue,
-    formState: { errors },
-  } = useForm<User>({
+  const { register, handleSubmit, setValue } = useForm<User>({
     defaultValues: {
-      email: auth?.data?.email,
-      name: auth?.data?.name,
-      gender: auth?.data?.gender,
-      id: auth?.data?.id,
-      status: auth?.data?.status,
+      ...auth?.data,
     },
   });
+
+  const router = useRouter();
 
   useEffect(() => {
     if (auth?.data) {
@@ -31,7 +25,11 @@ export default function Dashboard() {
       setValue('id', auth?.data?.id!);
       setValue('status', auth?.data?.status!);
     }
-  }, [auth, setValue]);
+
+    if (!auth?.data?.isLogin) {
+      router.push('/');
+    }
+  }, [auth, setValue, router]);
 
   const submitHandler = handleSubmit(async (data) => {
     const res = auth?.updateUser(data);
