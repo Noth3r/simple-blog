@@ -1,5 +1,5 @@
-import { Post } from '@/types/post';
-import { Dispatch, SetStateAction } from 'react';
+import { Post } from "@/types/post";
+import { Dispatch, SetStateAction } from "react";
 
 const ButtonPost = ({
   data,
@@ -27,6 +27,7 @@ const ButtonPost = ({
     <button
       onClick={() => onClickHandler()}
       disabled={disabled}
+      aria-label={`button ${next ? "next" : "prev"}`}
       className="w-5 h-5 flex justify-center items-center disabled:opacity-50"
     >
       {next ? (

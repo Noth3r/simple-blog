@@ -1,6 +1,6 @@
-import { useState } from 'react';
-import useAuth from '../../hooks/useAuth';
-import Link from 'next/link';
+import { useState } from "react";
+import useAuth from "../../hooks/useAuth";
+import Link from "next/link";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -14,6 +14,7 @@ export default function Navbar() {
           </div>
         </Link>
         <button
+          aria-label="menu"
           onClick={() => setIsOpen(!isOpen)}
           type="button"
           className="inline-flex items-center p-2 ml-3 text-sm text-gray-500 rounded-lg md:hidden"
@@ -39,7 +40,7 @@ export default function Navbar() {
 
         <div
           className={`absolute top-0 left-0 bg-white w-full mx-auto rounded-b-lg transition duration-500 ${
-            isOpen ? 'translate-y-0' : '-translate-y-[120%]'
+            isOpen ? "translate-y-0" : "-translate-y-[120%]"
           }`}
         >
           <svg
@@ -67,36 +68,28 @@ const ListNav = () => {
 
   return (
     <>
-      <Link href="/users">
-        <li className="cursor-pointer hover:scale-105 xl:hover:scale-110 transition font-semibold">
-          List Users
-        </li>
-      </Link>
-      <Link href="/">
-        <li className="cursor-pointer hover:scale-105 xl:hover:scale-110 transition font-semibold">
-          Home
-        </li>
-      </Link>
+      <li className="cursor-pointer mr-auto hover:scale-110 transition font-semibold">
+        <Link href="/users">List Users</Link>
+      </li>
+      <li className="cursor-pointer mr-auto hover:scale-110 transition font-semibold">
+        <Link href="/">Home</Link>
+      </li>
       {auth?.data?.isLogin && (
-        <Link href="/dashboard">
-          <li className="cursor-pointer hover:scale-105 xl:hover:scale-110 transition font-semibold">
-            Dashboard
-          </li>
-        </Link>
+        <li className="cursor-pointer mr-auto hover:scale-110 transition font-semibold">
+          <Link href="/dashboard">Dashboard</Link>
+        </li>
       )}
       {auth?.data?.isLogin ? (
         <li
           onClick={() => auth?.logout()}
-          className="cursor-pointer hover:scale-105 xl:hover:scale-110 transition font-semibold"
+          className="cursor-pointer mr-auto hover:scale-110 transition font-semibold"
         >
           Sign Out
         </li>
       ) : (
-        <Link href="/auth/signin">
-          <li className="cursor-pointer hover:scale-105 xl:hover:scale-110 transition font-semibold">
-            Sign In
-          </li>
-        </Link>
+        <li className="cursor-pointer mr-auto hover:scale-110 transition font-semibold">
+          <Link href="/auth/signin">Sign In</Link>
+        </li>
       )}
     </>
   );

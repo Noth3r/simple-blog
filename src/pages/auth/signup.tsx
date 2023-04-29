@@ -1,10 +1,10 @@
-import Layout from '@/components/layouts/Layout';
-import useAuth from '@/hooks/useAuth';
-import { User } from '@/types/user';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
-import { useEffect } from 'react';
-import { useForm } from 'react-hook-form';
+import Layout from "@/components/layouts/Layout";
+import useAuth from "@/hooks/useAuth";
+import { User } from "@/types/user";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
+import { useForm } from "react-hook-form";
 
 export default function Signup() {
   const auth = useAuth();
@@ -20,7 +20,7 @@ export default function Signup() {
     const res = auth?.signup({
       email: data.email,
       name: data.name,
-      status: 'active',
+      status: "active",
       gender: data.gender,
     });
 
@@ -29,10 +29,9 @@ export default function Signup() {
 
   useEffect(() => {
     if (auth?.data?.isLogin) {
-      router.push('/');
+      router.push("/");
     }
 
-    console.log(auth?.error);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [auth]);
 
@@ -45,7 +44,7 @@ export default function Signup() {
             <label>Email</label>
             <input
               className="border rounded px-2 py-1 mt-1 focus:outline-blue-500"
-              {...register('email')}
+              {...register("email")}
               type="email"
               placeholder="johndoe@mail.com"
             />
@@ -54,7 +53,7 @@ export default function Signup() {
             <label>Name</label>
             <input
               className="border rounded px-2 py-1 mt-1 focus:outline-blue-500"
-              {...register('name')}
+              {...register("name")}
               placeholder="John Doe"
             />
           </div>
@@ -62,9 +61,9 @@ export default function Signup() {
             <label>Gender</label>
             <select
               className="border rounded px-2 py-1 mt-1 focus:outline-blue-500"
-              {...register('gender', {
+              {...register("gender", {
                 validate: (value) => {
-                  return value == 'female' || value == 'male';
+                  return value == "female" || value == "male";
                 },
               })}
               defaultValue=""

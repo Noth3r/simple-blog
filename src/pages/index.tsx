@@ -1,15 +1,15 @@
-import { useQuery } from '@tanstack/react-query';
-import { getPostsList } from '@/utils/query';
-import { useState } from 'react';
-import Layout from '@/components/layouts/Layout';
-import ButtonPost from '@/components/post/ButtonPosts';
-import PostCard from '@/components/post/PostCard';
+import { useQuery } from "@tanstack/react-query";
+import { getPostsList } from "@/utils/query";
+import { useState } from "react";
+import Layout from "@/components/layouts/Layout";
+import ButtonPost from "@/components/post/ButtonPosts";
+import PostCard from "@/components/post/PostCard";
 
 export default function Home() {
   const [page, setPage] = useState(1);
 
   const { isLoading, data: queryData } = useQuery(
-    ['posts', page],
+    ["posts", page],
     () => getPostsList(page),
     { keepPreviousData: true }
   );
