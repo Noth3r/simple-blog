@@ -11,7 +11,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const user = await getUsers();
   return {
     props: {
-      user,
+      user: user.data,
     },
   };
 };

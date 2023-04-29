@@ -5,6 +5,7 @@ const api = axios.create({
   headers: {
     Authorization: `Bearer ${process.env.NEXT_PUBLIC_ACCESS_TOKEN}`,
   },
+  validateStatus: (status) => status < 500,
 });
 
 export default api;

@@ -19,8 +19,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const post = await getPost(parseInt(id as string));
   return {
     props: {
-      post,
-      commentSSR,
+      post: post.data,
+      commentSSR: commentSSR.data,
     },
   };
 };

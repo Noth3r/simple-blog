@@ -6,6 +6,7 @@ export type AuthContextType = {
   updateUser: (data: User) => void;
   signin: (email: string, id: number) => void;
   logout: () => void;
+  error: string | undefined;
 };
 
 export type Auth = {

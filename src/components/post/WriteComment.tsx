@@ -1,7 +1,7 @@
 import useAuth from '@/hooks/useAuth';
 import { Comment } from '@/types/post';
 import { postComment } from '@/utils/query';
-import { Dispatch, FormEvent, SetStateAction } from 'react';
+import { Dispatch, FormEvent, SetStateAction, useRef } from 'react';
 
 const WriteComment = ({
   setComment,
@@ -11,6 +11,7 @@ const WriteComment = ({
   id: number;
 }) => {
   const auth = useAuth();
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const submitHandler = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -23,12 +24,14 @@ const WriteComment = ({
 
     if (!res) return;
 
-    setComment((prev) => [res, ...prev]);
+    inputRef.current!.value = '';
+    setComment((prev) => [res.data, ...prev]);
   };
 
   return (
     <form className="mb-4 flex" onSubmit={submitHandler}>
       <input
+        ref={inputRef}
         autoComplete="off"
         type="text"
         name="body"
@@ -36,7 +39,7 @@ const WriteComment = ({
         placeholder={
           auth?.data?.isLogin
             ? 'Write your comments...'
-            : 'Login to write comments'
+            : 'Sign in to write comments'
         }
         required
         disabled={!auth?.data?.isLogin}

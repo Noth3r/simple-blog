@@ -2,73 +2,98 @@ import { Comment, Post } from '@/types/post';
 import api from './axios';
 import { User } from '@/types/user';
 
-export const getPostsList = async (id: number) => {
-  const { data } = await api.get<Post[]>(`/posts?page=${id}`);
-
-  return data;
-};
-
-export const getPost = async (id: number) => {
-  const { data } = await api.get<Post>(`/posts/${id}`);
-
-  return data;
-};
-
-export const getComment = async (id: number) => {
-  const { data } = await api.get<Comment>(`/posts/${id}/comments`);
-
-  return data;
+type Error = {
+  message: string;
+  field?: string;
 };
 
 type PostComment = {
   body: string;
 } & Partial<User>;
 
-export const postComment = async (id: number, comment: PostComment) => {
-  const { data } = await api.post<Comment>(`/posts/${id}/comments`, {
-    name: comment.name,
-    email: comment.email,
-    body: comment.body,
-  });
+export const getPostsList = async (id: number) => {
+  const { data, status } = await api.get<Post[] & Error[]>(`/posts?page=${id}`);
 
-  return data;
+  return { data, status };
+};
+
+export const getPost = async (id: number) => {
+  const { data, status } = await api.get<Post & Error[]>(`/posts/${id}`);
+
+  return { data, status };
+};
+
+export const getComment = async (id: number) => {
+  const { data, status } = await api.get<Comment & Error[]>(
+    `/posts/${id}/comments`
+  );
+
+  return { data, status };
+};
+
+export const postComment = async (id: number, comment: PostComment) => {
+  const { data, status } = await api.post<Comment & Error[]>(
+    `/posts/${id}/comments`,
+    {
+      name: comment.name,
+      email: comment.email,
+      body: comment.body,
+    }
+  );
+
+  return { data, status };
 };
 
 export const createUser = async ({ email, name, gender, status }: User) => {
-  const { data } = await api.post<User>('/users', {
-    email,
-    name,
-    gender,
-    status,
-  });
+  const { data, status: statusCode } = await api.post<User & Error[]>(
+    '/users',
+    {
+      email,
+      name,
+      gender,
+      status,
+    }
+  );
 
-  return data;
+  return { data, status: statusCode };
 };
 
 export const getUsers = async () => {
-  const { data } = await api.get<User[]>('/users?page=1&per_page=100');
+  const { data, status } = await api.get<User[] & Error[]>(
+    '/users?page=1&per_page=100'
+  );
 
-  return data;
+  return { data, status };
 };
 
 export const deleteUser = async (id: number) => {
-  const { data } = await api.delete(`/users/${id}`);
+  const { data, status } = await api.delete(`/users/${id}`);
 
-  return data;
+  return { data, status };
 };
 
 export const loginUser = async (email: string, id: number) => {
-  const { data } = await api.get<User>(`/users/${id}`);
+  const { data, status } = await api.get<User & Error[]>(`/users/${id}`);
 
   if (data.email != email) {
-    return null;
+    return {
+      data: [
+        {
+          message: 'User not found',
+        },
+      ],
+      status: 404,
+    };
   }
 
-  return data;
+  return { data, status };
 };
 
 export const updateUser = async (user: User) => {
-  const { data } = await api.put<User>(`/users/${user.id}`, user);
+  const { data, status } = await api.put<User & Error[]>(
+    `/users/${user.id}`,
+    user
+  );
 
-  return data;
+  return { data, status };
 };

@@ -8,6 +8,7 @@ const AuthContext = createContext<AuthContextType | null>(null);
 
 const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [auth, setAuth] = useState<Auth>();
+  const [error, setError] = useState<string>();
 
   useEffect(() => {
     setAuth(callback());
@@ -27,8 +28,14 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     if (!res) return;
 
-    localStorage.setItem('token', JSON.stringify(res));
-    setAuth({ isLogin: true, ...res });
+    if (res.status !== 200) {
+      setError(res.data.map((e) => e.field + ' ' + e.message).join(', '));
+      setTimeout(() => setError(''), 3000);
+      return;
+    }
+
+    localStorage.setItem('token', JSON.stringify(res.data));
+    setAuth({ isLogin: true, ...res.data });
     return res;
   };
 
@@ -37,8 +44,14 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     if (!res) return;
 
-    localStorage.setItem('token', JSON.stringify(res));
-    setAuth({ isLogin: true, ...res });
+    if (res.status !== 200) {
+      setError(res.data.map((e) => e.message).join(', '));
+      setTimeout(() => setError(''), 3000);
+      return;
+    }
+
+    localStorage.setItem('token', JSON.stringify(res.data));
+    setAuth({ isLogin: true, ...res.data });
     return res;
   };
 
@@ -50,13 +63,21 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const update = async (data: User) => {
     const res = await updateUser(data);
 
-    localStorage.setItem('token', JSON.stringify(res));
-    setAuth({ isLogin: true, ...res });
+    if (!res) return;
+
+    if (res.status !== 200) {
+      setError(res.data.map((e) => e.field + ' ' + e.message).join(', '));
+      setTimeout(() => setError(''), 3000);
+      return;
+    }
+
+    localStorage.setItem('token', JSON.stringify(res.data));
+    setAuth({ isLogin: true, ...res.data });
   };
 
   return (
     <AuthContext.Provider
-      value={{ data: auth, signin, signup, logout, updateUser: update }}
+      value={{ data: auth, signin, signup, logout, updateUser: update, error }}
     >
       {children}
     </AuthContext.Provider>

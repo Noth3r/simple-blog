@@ -8,11 +8,13 @@ import PostCard from '@/components/post/PostCard';
 export default function Home() {
   const [page, setPage] = useState(1);
 
-  const { isLoading, data } = useQuery(
+  const { isLoading, data: queryData } = useQuery(
     ['posts', page],
     () => getPostsList(page),
     { keepPreviousData: true }
   );
+
+  const data = queryData?.data;
 
   return (
     <Layout>

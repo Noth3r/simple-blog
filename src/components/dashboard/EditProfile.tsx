@@ -39,7 +39,7 @@ const EditProfile = () => {
   };
 
   return (
-    <div className="border-2 p-4 rounded-xl max-w-4xl mx-auto mt-6">
+    <div className="border-2 p-4 rounded-xl max-w-4xl mx-auto my-6">
       <h1 className="text-center text-xl font-semibold">Edit Profile</h1>
       <form onSubmit={submitHandler} className="flex flex-col gap-3 mt-2">
         <div className="flex flex-col">
@@ -73,6 +73,11 @@ const EditProfile = () => {
             <option value="female">Female</option>
           </select>
         </div>
+        {auth?.error && (
+          <p className="text-red-500 text-sm text-center font-semibold">
+            {auth?.error}
+          </p>
+        )}
         <div className="mx-auto flex gap-4">
           <button
             onClick={(e) => deleteHandler(e)}

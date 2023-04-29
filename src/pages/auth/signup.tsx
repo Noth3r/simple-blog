@@ -31,6 +31,8 @@ export default function Signup() {
     if (auth?.data?.isLogin) {
       router.push('/');
     }
+
+    console.log(auth?.error);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [auth]);
 
@@ -80,6 +82,11 @@ export default function Signup() {
               Sign In
             </Link>
           </div>
+          {auth?.error && (
+            <p className="text-red-500 text-sm text-center font-semibold">
+              {auth?.error}
+            </p>
+          )}
           <button
             type="submit"
             className="cursor-pointer mx-auto bg-blue-600 hover:bg-blue-600/90 text-white px-4 py-2 rounded-lg"
