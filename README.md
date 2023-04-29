@@ -2,7 +2,9 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Getting Started
 
-First, run the development server:
+First, add token into .env file, you can get the token from [gorest](https://gorest.co.in)
+
+Then, run the development server:
 
 ```bash
 npm run dev
